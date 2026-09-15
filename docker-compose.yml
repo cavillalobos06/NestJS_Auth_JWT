@@ -1,0 +1,39 @@
+services:
+  # Contenedor para tu base de datos PostgreSQL
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: nest_postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres       # Ajusta con tu usuario de BD
+      POSTGRES_PASSWORD: Qwe.123*  # Ajusta con tu contraseña de BD
+      POSTGRES_DB: products_db         # Ajusta con el nombre de tu BD
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Contenedor para tu aplicación de NestJS
+  api_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: nest_api_container
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # 💡 ¡OJO AQUÍ!: El HOST de tu base de datos ya no es 'localhost',
+      # ahora debe apuntar al nombre del servicio de arriba ('postgres_db')
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: Qwe.123*
+      DBASE_NAME: products_db
+      JWT_SECRET: clave_super_segura
+    depends_on:
+      - postgres_db
+
+volumes:
+  postgres_data: # Mantiene los datos de tu BD guardados aunque apagues el contenedor
