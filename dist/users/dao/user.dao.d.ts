@@ -5,7 +5,9 @@ export declare class UserDao {
     private readonly typeOrmRepository;
     constructor(typeOrmRepository: Repository<User>);
     saveUser(createUserDto: CreateUserDto): Promise<User>;
+    findAll(): Promise<User[]>;
     findByEmail(email: string): Promise<User | null>;
     findById(id: number): Promise<User | null>;
     updateUser(id: number, updateData: Partial<User>): Promise<void>;
+    delete(id: number): Promise<void>;
 }

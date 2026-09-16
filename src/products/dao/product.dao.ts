@@ -22,6 +22,13 @@ export class ProductDao {
       relations: {
         user: true,
       },
+      select: {
+        user: {
+          id: true,
+          name: true,
+          role: true
+        }
+      }
     });
   }
 
@@ -29,6 +36,13 @@ export class ProductDao {
     return await this.productRepository.findOne({
       where: { id },
       relations: { user: true },
+      select: {
+        user: {
+          id: true,
+          name: true,
+          role: true
+        }
+      }
     });
   }
 

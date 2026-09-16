@@ -6,7 +6,9 @@ export declare class UsersService {
     private readonly userDao;
     constructor(userDao: UserDao);
     create(createUserDto: CreateUserDto): Promise<User>;
+    findAll(): Promise<User[]>;
     findByEmail(email: string): Promise<User>;
     findById(id: number): Promise<User>;
     update(id: number, updateUserDto: UpdateUserDto): Promise<User>;
+    delete(id: number): Promise<void>;
 }

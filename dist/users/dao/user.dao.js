@@ -23,6 +23,9 @@ let UserDao = class UserDao {
         const user = this.typeOrmRepository.create(createUserDto);
         return await this.typeOrmRepository.save(user);
     }
+    async findAll() {
+        return await this.typeOrmRepository.find();
+    }
     async findByEmail(email) {
         return await this.typeOrmRepository.findOne({ where: { email } });
     }
@@ -31,6 +34,9 @@ let UserDao = class UserDao {
     }
     async updateUser(id, updateData) {
         await this.typeOrmRepository.update(id, updateData);
+    }
+    async delete(id) {
+        await this.typeOrmRepository.delete(id);
     }
 };
 UserDao = __decorate([

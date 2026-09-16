@@ -28,6 +28,10 @@ export class UsersService {
     });
   }
 
+  async findAll(): Promise<User[]>{
+    return await this.userDao.findAll()
+  }
+
   async findByEmail(email: string): Promise<User> {
     const user = await this.userDao.findByEmail(email);
     if (!user) {
@@ -49,7 +53,11 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User>{
-    await this.userDao.findById(id)
+    const user = await this.userDao.findById(id)
+
+    if(!user){
+      throw new NotFoundException(`El usuario con el id:${id} no existe`)
+    }
 
     if(updateUserDto.password){
         updateUserDto.password = await bcryptjs.hash(updateUserDto.password, 10)
@@ -58,5 +66,9 @@ export class UsersService {
     await this.userDao.updateUser(id, updateUserDto)
 
     return await this.findById(id)
+  }
+
+  async delete(id: number){
+    await this.userDao.delete(id)
   }
 }

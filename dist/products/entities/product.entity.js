@@ -7,36 +7,47 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { User } from "../../users/entities/user.entity.js";
 let Product = class Product {
     id;
     name;
     price;
     description;
     stock;
+    createdAt;
+    user;
 };
 __decorate([
     PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
 ], Product.prototype, "id", void 0);
 __decorate([
-    Column({ type: 'varchar', length: 255 }),
+    Column({ type: "varchar", length: 255 }),
     __metadata("design:type", String)
 ], Product.prototype, "name", void 0);
 __decorate([
-    Column({ type: 'decimal', precision: 10, scale: 2 }),
+    Column({ type: "decimal", precision: 10, scale: 2 }),
     __metadata("design:type", Number)
 ], Product.prototype, "price", void 0);
 __decorate([
-    Column({ type: 'text', nullable: true }),
+    Column({ type: "text", nullable: true }),
     __metadata("design:type", String)
 ], Product.prototype, "description", void 0);
 __decorate([
-    Column({ type: 'integer', default: 0 }),
+    Column({ type: "integer", default: 0 }),
     __metadata("design:type", Number)
 ], Product.prototype, "stock", void 0);
+__decorate([
+    Column({ type: "date", default: () => "CURRENT_TIMESTAMP" }),
+    __metadata("design:type", Date)
+], Product.prototype, "createdAt", void 0);
+__decorate([
+    ManyToOne(() => User, (user) => user.products, { onDelete: "CASCADE" }),
+    __metadata("design:type", User)
+], Product.prototype, "user", void 0);
 Product = __decorate([
-    Entity('products')
+    Entity("products")
 ], Product);
 export { Product };
 //# sourceMappingURL=product.entity.js.map

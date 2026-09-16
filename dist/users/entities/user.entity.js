@@ -7,36 +7,52 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Product } from "../../products/entities/product.entity.js";
 let User = class User {
     id;
     name;
     role;
     email;
     password;
+    createdAt;
+    updatedAt;
+    products;
 };
 __decorate([
     PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 __decorate([
-    Column({ type: 'varchar', length: 255 }),
+    Column({ type: "varchar", length: 255 }),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
-    Column({ type: 'varchar', length: 20, default: 'user' }),
+    Column({ type: "varchar", length: 20, default: "user" }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([
-    Column({ type: 'varchar', length: 255 }),
+    Column({ type: "varchar", length: 255, unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    Column({ type: 'varchar', length: 255 }),
+    Column({ type: "varchar", length: 255 }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    CreateDateColumn(),
+    __metadata("design:type", Date)
+], User.prototype, "createdAt", void 0);
+__decorate([
+    UpdateDateColumn(),
+    __metadata("design:type", Date)
+], User.prototype, "updatedAt", void 0);
+__decorate([
+    OneToMany(() => Product, (product) => product.user),
+    __metadata("design:type", Array)
+], User.prototype, "products", void 0);
 User = __decorate([
-    Entity('users')
+    Entity("users")
 ], User);
 export { User };
 //# sourceMappingURL=user.entity.js.map

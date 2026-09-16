@@ -10,65 +10,71 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard.js';
+import { GetUser } from '../auth/decorators/user.decorator.js';
 let ProductsController = class ProductsController {
     productsService;
     constructor(productsService) {
         this.productsService = productsService;
     }
-    create(createProductDto) {
-        return this.productsService.create(createProductDto);
+    async create(createProductDto, user) {
+        return await this.productsService.create(createProductDto, user);
     }
-    findAll() {
-        return this.productsService.findAll();
+    async findAll() {
+        return await this.productsService.findAll();
     }
-    findOne(id) {
-        return this.productsService.findOne(+id);
+    async findOne(id) {
+        return await this.productsService.findOne(id);
     }
-    update(id, updateProductDto) {
-        return this.productsService.update(+id, updateProductDto);
+    async update(id, updateProductDto) {
+        return await this.productsService.update(id, updateProductDto);
     }
-    remove(id) {
-        return this.productsService.remove(+id);
+    async remove(id) {
+        return await this.productsService.remove(id);
     }
 };
 __decorate([
+    UseGuards(JwtAuthGuard),
     Post(),
     __param(0, Body()),
+    __param(1, GetUser()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateProductDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [CreateProductDto, Object]),
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "create", null);
 __decorate([
     Get(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "findAll", null);
 __decorate([
     Get(':id'),
-    __param(0, Param('id')),
+    __param(0, Param('id', ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "findOne", null);
 __decorate([
+    UseGuards(JwtAuthGuard),
     Patch(':id'),
-    __param(0, Param('id')),
+    __param(0, Param('id', ParseIntPipe)),
     __param(1, Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, UpdateProductDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Number, UpdateProductDto]),
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "update", null);
 __decorate([
+    UseGuards(JwtAuthGuard),
     Delete(':id'),
-    __param(0, Param('id')),
+    __param(0, Param('id', ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "remove", null);
 ProductsController = __decorate([
     Controller('products'),

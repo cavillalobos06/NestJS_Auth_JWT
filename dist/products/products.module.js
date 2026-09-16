@@ -9,13 +9,14 @@ import { ProductsService } from './products.service.js';
 import { ProductsController } from './products.controller.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity.js';
+import { ProductDao } from './dao/product.dao.js';
 let ProductsModule = class ProductsModule {
 };
 ProductsModule = __decorate([
     Module({
         imports: [TypeOrmModule.forFeature([Product])],
         controllers: [ProductsController],
-        providers: [ProductsService],
+        providers: [ProductDao, ProductsService],
     })
 ], ProductsModule);
 export { ProductsModule };

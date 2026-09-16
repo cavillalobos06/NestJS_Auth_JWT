@@ -8,8 +8,6 @@ import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { ProductsModule } from './products/products.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
@@ -21,14 +19,16 @@ AppModule = __decorate([
         imports: [
             ConfigModule.forRoot({
                 isGlobal: true,
+                ignoreEnvFile: process.env.DATABASE_HOST !== undefined ||
+                    process.env.DB_HOST !== undefined,
             }),
             TypeOrmModule.forRootAsync({
                 imports: [ConfigModule],
                 inject: [ConfigService],
                 useFactory: (configService) => ({
                     type: 'postgres',
-                    host: configService.get('DB_HOST'),
-                    port: configService.get('DB_PORT'),
+                    host: configService.get('DB_HOST') || 'postgres_db',
+                    port: parseInt(configService.get('DB_PORT') || '5432', 10),
                     username: configService.get('DB_USER'),
                     password: configService.get('DB_PASSWORD'),
                     database: configService.get('DB_NAME'),
@@ -45,8 +45,8 @@ AppModule = __decorate([
             AuthModule,
             UsersModule,
         ],
-        controllers: [AppController],
-        providers: [AppService],
+        controllers: [],
+        providers: [],
     })
 ], AppModule);
 export { AppModule };

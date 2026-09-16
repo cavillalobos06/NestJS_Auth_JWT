@@ -9,6 +9,9 @@ export declare class AuthController {
         name: string;
         role: string;
         email: string;
+        createdAt: Date;
+        updatedAt: Date;
+        products: import("../products/entities/product.entity.js").Product[];
     }>;
     login(loginDto: LoginDto): Promise<{
         acces_token: string;

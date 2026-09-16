@@ -4,9 +4,11 @@ import { UpdateProductDto } from './dto/update-product.dto.js';
 export declare class ProductsController {
     private readonly productsService;
     constructor(productsService: ProductsService);
-    create(createProductDto: CreateProductDto): string;
+    create(createProductDto: CreateProductDto, user: any): Promise<import("./entities/product.entity.js").Product>;
     findAll(): Promise<import("./entities/product.entity.js").Product[]>;
-    findOne(id: string): Promise<import("./entities/product.entity.js").Product>;
-    update(id: string, updateProductDto: UpdateProductDto): string;
-    remove(id: string): string;
+    findOne(id: number): Promise<import("./entities/product.entity.js").Product>;
+    update(id: number, updateProductDto: UpdateProductDto): Promise<import("./entities/product.entity.js").Product>;
+    remove(id: number): Promise<{
+        message: string;
+    }>;
 }

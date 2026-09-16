@@ -7,7 +7,7 @@ export class RegisterDto {
   @Transform(({ value }) => value.trim())
   name: string;
 
-  @IsEmail()
+  @IsEmail({}, {message: 'Formato de email inválido'})
   email: string;
 
   @Transform(({ value }) => value.trim())

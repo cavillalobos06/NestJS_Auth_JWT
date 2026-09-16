@@ -21,7 +21,7 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterDto.prototype, "name", void 0);
 __decorate([
-    IsEmail(),
+    IsEmail({}, { message: 'Formato de email inválido' }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "email", void 0);
 __decorate([

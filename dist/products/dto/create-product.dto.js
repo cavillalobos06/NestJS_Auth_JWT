@@ -7,22 +7,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
 export class CreateProductDto {
     name;
     price;
     description;
+    stock;
 }
 __decorate([
     IsString(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "name", void 0);
 __decorate([
-    IsInt(),
+    IsNumber({}, { message: 'El precio debe ser un número válido' }),
     __metadata("design:type", Number)
 ], CreateProductDto.prototype, "price", void 0);
 __decorate([
     IsString(),
+    IsOptional(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "description", void 0);
+__decorate([
+    IsInt(),
+    __metadata("design:type", Number)
+], CreateProductDto.prototype, "stock", void 0);
 //# sourceMappingURL=create-product.dto.js.map

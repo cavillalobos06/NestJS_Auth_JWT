@@ -7,42 +7,44 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Product } from './entities/product.entity.js';
+import { ProductDao } from './dao/product.dao.js';
 let ProductsService = class ProductsService {
-    productRepository;
-    constructor(productRepository) {
-        this.productRepository = productRepository;
+    productDao;
+    constructor(productDao) {
+        this.productDao = productDao;
     }
-    create(createProductDto) {
-        return 'This action adds a new product';
+    async create(createProductDto, userLogueado) {
+        const newProductData = {
+            ...createProductDto,
+            user: { id: userLogueado.sub },
+        };
+        return await this.productDao.save(newProductData);
     }
     async findAll() {
-        return await this.productRepository.find();
+        return await this.productDao.findAll();
     }
     async findOne(id) {
-        const product = await this.productRepository.findOneBy({ id });
+        const product = await this.productDao.findById(id);
         if (!product) {
             throw new NotFoundException(`El producto con ID ${id} no existe`);
         }
         return product;
     }
-    update(id, updateProductDto) {
-        return `This action updates a #${id} product`;
+    async update(id, updateProductDto) {
+        await this.findOne(id);
+        await this.productDao.update(id, updateProductDto);
+        return await this.findOne(id);
     }
-    remove(id) {
-        return `This action removes a #${id} product`;
+    async remove(id) {
+        await this.findOne(id);
+        await this.productDao.delete(id);
+        return { message: `Producto con ID ${id} eliminado correctamente` };
     }
 };
 ProductsService = __decorate([
     Injectable(),
-    __param(0, InjectRepository(Product)),
-    __metadata("design:paramtypes", [Repository])
+    __metadata("design:paramtypes", [ProductDao])
 ], ProductsService);
 export { ProductsService };
 //# sourceMappingURL=products.service.js.map
